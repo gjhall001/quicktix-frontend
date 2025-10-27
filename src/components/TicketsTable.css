@@ -1,0 +1,87 @@
+/* src/components/TicketsTable.css */
+
+/* Overall container */
+.ticketsTableContainer {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 1000px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+/* Table heading */
+.ticketsTableContainer h3 {
+  text-align: left;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+/* Table layout */
+.ticketsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+
+/* Table header */
+.ticketsTable thead {
+  background-color: #007bff;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ticketsTable th {
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Table rows */
+.ticketsTable td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #e5e5e5;
+  color: #444;
+}
+
+/* Alternate row color */
+.ticketsTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect */
+.ticketsTable tr:hover {
+  background-color: #f1f7ff;
+  transition: background-color 0.2s ease;
+}
+
+/* Empty state or messages */
+.ticketsTableContainer p {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  margin: 1.5rem 0;
+}
+
+/* Optional: refresh button if used */
+.ticketsTableContainer button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.ticketsTableContainer button:hover {
+  background-color: #0056b3;
+}

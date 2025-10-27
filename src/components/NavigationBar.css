@@ -1,0 +1,80 @@
+/* NavigationBar.css */
+
+.Wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: #f2f2f2; /* Light gray background */
+  color: #333;
+  height: 80px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logoName,
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Inherits text color from parent */
+  gap: 10px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+.right ul {
+  display: flex;
+  gap: 35px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.right ul li {
+  font-size: 1.1rem;
+}
+
+.left h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #333; /* Darker text for contrast */
+  text-decoration: none;
+}
+
+.right ul li a,
+.navLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for all nav items including Logout */
+.right ul li a:hover,
+.navLink:hover {
+  color: #0077cc; /* Light blue on hover */
+}
+
+/* 👤 Displayed user name */
+.userName {
+  color: #444;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Optional tweak: visually separate user's name */
+.userName::before {
+  content: '|';
+  margin-right: 10px;
+  color: #aaa;
+}

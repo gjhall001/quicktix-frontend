@@ -1,0 +1,16 @@
+p {
+    font-size: 1.25em;
+    text-decoration: none;
+
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+    transition: color 0.3s ease;
+
+}
+
+a:hover {
+    color: #0077cc;  /* Light blue on hover */
+}
