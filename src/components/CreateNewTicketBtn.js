@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
-import './NeedHelp.css';
+import './CreateNewTicketBtn.css';
 
-function NeedHelp() {
+function CreateNewTicketBtn() {
   return (
     <>
       <div>
-        <Link to="/ContactUs">
-          <p>Need help?</p>
-        </Link>
         <Link to="/create-new-ticket">
           <button className="newTicketBtn">Create New Ticket</button>
         </Link>
@@ -16,4 +13,4 @@ function NeedHelp() {
   );
 }
 
-export default NeedHelp;
+export default CreateNewTicketBtn;

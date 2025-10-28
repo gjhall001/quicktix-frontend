@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 // src/components/Home.js
 import NavigationBar from './NavigationBar';
 import MyTicketsSummary from './MyTicketsSummary';
 import TicketsTable from './TicketsTable';
-import NeedHelp from './NeedHelp';
+import CreateNewTicketBtn from './CreateNewTicketBtn';
 import { useTickets } from '../TicketsContext';
 
 function Home() {
@@ -19,7 +19,7 @@ function Home() {
       <NavigationBar />
       <MyTicketsSummary />
       <TicketsTable tickets={myTickets} />
-      <NeedHelp />
+      <CreateNewTicketBtn />
     </>
   );    
 }
