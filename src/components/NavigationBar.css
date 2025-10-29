@@ -1,80 +1,103 @@
-/* NavigationBar.css */
-
+/* ===== Full-Width Fixed Navigation Bar ===== */
 .Wrapper {
+  position: fixed;              /* stays at the top */
+  top: 0;
+  left: 0;
+  width: 100%;                  /* ✅ span entire width */
+  height: 70px;
+  z-index: 1000;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  background-color: #f2f2f2; /* Light gray background */
+  padding: 0 40px;
+  background-color: #f2f2f2;    /* ✅ solid, professional blue */
   color: #333;
-  height: 80px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.logoName,
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none; /* Removes underline */
-  color: inherit; /* Inherits text color from parent */
-  gap: 10px;
-}
-
+/* ===== Left side (Logo + Brand Name) ===== */
 .left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .logo {
-  height: 40px;
+  height: 42px;
   width: auto;
 }
 
+.logoName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+}
+
+/* ===== Right side navigation ===== */
 .right ul {
   display: flex;
-  gap: 35px;
+  align-items: center;
+  gap: 30px;
   list-style: none;
   margin: 0;
   padding: 0;
-  align-items: center;
 }
 
-.right ul li {
-  font-size: 1.1rem;
-}
-
-.left h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  color: #333; /* Darker text for contrast */
-  text-decoration: none;
-}
-
-.right ul li a,
+/* ===== Navigation links ===== */
 .navLink {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
-/* Hover effect for all nav items including Logout */
-.right ul li a:hover,
 .navLink:hover {
-  color: #0077cc; /* Light blue on hover */
+  color: #d0e7ff;
 }
 
-/* 👤 Displayed user name */
+/* ===== Logout button styled like link ===== */
+.navButtonLikeLink {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
 .userName {
-  color: #444;
-  font-style: italic;
   font-weight: 500;
+  color: #333;
 }
 
-/* Optional tweak: visually separate user's name */
-.userName::before {
-  content: '|';
-  margin-right: 10px;
-  color: #aaa;
+/* ===== Body and main content adjustments ===== */
+body {
+  background-color: #f8fafc;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding-top: 90px; /* ✅ ensures content isn't hidden behind fixed navbar */
+}
+
+/* ===== Responsive behavior ===== */
+@media (max-width: 768px) {
+  .Wrapper {
+    padding: 0 20px; /* slightly tighter padding on mobile */
+  }
+
+  .right ul {
+    gap: 18px;
+  }
+
+  .logoName {
+    font-size: 1.3rem;
+  }
+
+  .navLink {
+    font-size: 0.95rem;
+  }
 }

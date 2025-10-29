@@ -4,13 +4,20 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import { useTickets } from "../TicketsContext"; // ✅ import context
 
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? "https://csci441-group-project.onrender.com"
+    : "http://localhost:5000";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setCurrentUser } = useTickets(); // ✅ use context function
+
+  // ✅ bring in refresh + fetch from context
+  const { setCurrentUser, refreshCurrentUser, fetchTickets } = useTickets();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,44 +25,38 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // ✅ Call backend API
-      const response = await fetch(
-        "https://csci441-group-project.onrender.com/api/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include", // 👈 send cookies
+      });
 
-      // If server returns an error
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Invalid credentials");
       }
 
-      // ✅ Parse success response
       const data = await response.json();
-      console.log("Login success:", data);
+      console.log("✅ Login success:", data);
 
-      // Example expected structure:
-      // { token: "...", user: { id, email, name, role } }
-
-      // ✅ Save token + user info
-      localStorage.setItem("token", data.token);
+      // ✅ Persist user info locally
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      // ✅ Update global context
       setCurrentUser(data.user);
 
-      // ✅ Redirect based on role
+      // ✅ Immediately refresh current user from backend (verifies cookie)
+      await refreshCurrentUser();
+
+      // ✅ Fetch user's tickets right after login
+      await fetchTickets();
+
+      // ✅ Redirect user
       const role = data.user?.role?.toLowerCase();
       if (role === "admin") navigate("/admin");
       else if (role === "agent") navigate("/agent");
       else navigate("/home");
-
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("❌ Login error:", err);
       setError(err.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
@@ -70,7 +71,9 @@ export default function Login() {
 
         {error && <p className="error-message">{error}</p>}
 
-        <label htmlFor="email" className="form-label">Email</label>
+        <label htmlFor="email" className="form-label">
+          Email
+        </label>
         <input
           id="email"
           type="email"
@@ -81,7 +84,9 @@ export default function Login() {
           required
         />
 
-        <label htmlFor="password" className="form-label">Password</label>
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
         <input
           id="password"
           type="password"
@@ -97,8 +102,7 @@ export default function Login() {
         </button>
 
         <p className="reset-link">
-          Forgot your password?{" "}
-          <Link to="/reset">Reset it</Link>
+          Forgot your password? <Link to="/reset">Reset it</Link>
         </p>
 
         <p className="sign-up">

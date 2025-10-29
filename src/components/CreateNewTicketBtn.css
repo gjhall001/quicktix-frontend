@@ -1,7 +1,15 @@
+div {
+    margin-bottom: 50px;
+}
+
 p {
-    font-size: 1.25em;
+    font-size: 1.75em;
     text-decoration: none;
 
+}
+
+button {
+    width: 200px;
 }
 
 a {

@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "./CreateTicket.css";
 import { useTickets } from "../TicketsContext";
 
-const API_BASE = "https://csci441-group-project.onrender.com";
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? "https://csci441-group-project.onrender.com"
+    : "http://localhost:5000";
 
 function CreateTicket() {
   const navigate = useNavigate();
-  const { currentUser, refreshCurrentUser } = useTickets();
+  const { currentUser, refreshCurrentUser, createTicket, fetchTickets } = useTickets();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -37,20 +40,10 @@ function CreateTicket() {
 
     setSubmitting(true);
     try {
-      // Ensure we actually have a logged-in user (refresh via /api/users/profile if needed)
-      let user = currentUser;
-      if (!user) {
-        user = await refreshCurrentUser(); // 👈 try to load from backend
-      }
+      // Ensure user is loaded
+      let user = currentUser || (await refreshCurrentUser());
       if (!user) {
         setError("You must be logged in to create a ticket.");
-        setSubmitting(false);
-        return;
-      }
-
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Missing auth token. Please log in again.");
         setSubmitting(false);
         return;
       }
@@ -62,28 +55,25 @@ function CreateTicket() {
         description: formData.description.trim(),
         status: "Open",
         priority: formData.priority,
-        customer: user._id || user.userId || user.email, // reference to current user
+        customer: user._id,
         agent: null,
         createdAt: now,
         updatedAt: now,
       };
 
-      const res = await fetch(`${API_BASE}/api/tickets`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      console.log("📝 Creating ticket:", payload);
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to create ticket");
+      // Use context createTicket to post to backend
+      const saved = await createTicket(payload);
+
+      if (saved) {
+        console.log("✅ Ticket created successfully:", saved);
+        await fetchTickets(); // refresh list before navigation
+        alert("Ticket created successfully!");
+        navigate("/home");
+      } else {
+        throw new Error("Failed to create ticket.");
       }
-
-      alert("Ticket created successfully!");
-      navigate("/home");
     } catch (err) {
       console.error("Create ticket error:", err);
       setError(err.message || "Failed to create ticket.");
@@ -124,36 +114,18 @@ function CreateTicket() {
 
           <label>Priority*</label>
           <div className="radioGroup">
-            <label className="radioOption">
-              <input
-                type="radio"
-                name="priority"
-                value="Low"
-                checked={formData.priority === "Low"}
-                onChange={handleChange}
-              />
-              Low
-            </label>
-            <label className="radioOption">
-              <input
-                type="radio"
-                name="priority"
-                value="Medium"
-                checked={formData.priority === "Medium"}
-                onChange={handleChange}
-              />
-              Medium
-            </label>
-            <label className="radioOption">
-              <input
-                type="radio"
-                name="priority"
-                value="High"
-                checked={formData.priority === "High"}
-                onChange={handleChange}
-              />
-              High
-            </label>
+            {["Low", "Medium", "High"].map((level) => (
+              <label key={level} className="radioOption">
+                <input
+                  type="radio"
+                  name="priority"
+                  value={level}
+                  checked={formData.priority === level}
+                  onChange={handleChange}
+                />
+                {level}
+              </label>
+            ))}
           </div>
 
           <button type="submit" disabled={submitting}>

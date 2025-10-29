@@ -3,6 +3,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./SignUp.css";
 
+//const API_BASE = "https://csci441-group-project.onrender.com";
+//const API_BASE = "http://localhost:5000";
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? "https://csci441-group-project.onrender.com"
+    : "http://localhost:5000";
+
+
 export default function SignUp() {
   const navigate = useNavigate();
 
@@ -57,7 +65,7 @@ export default function SignUp() {
       console.log("Registering new user:", newUser);
 
       const response = await fetch(
-        "https://csci441-group-project.onrender.com/api/auth/register",
+        `${API_BASE}/api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
